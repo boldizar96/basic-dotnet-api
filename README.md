@@ -5,6 +5,7 @@ Basic asp.net core api for Untitled Project
 Elvileg VS-ben simán csak meg kell nyitni.
 
 Esetleg ha kell, akkor SQL Studioval csináljatok egy UntitledProject nevű adatbázist, aztán még ezeket futtassátok le rá:
+
 Create Table Product(
 ProductId Int Identity(1,1) Primary Key,
 ProductName Varchar(100) Not Null,
