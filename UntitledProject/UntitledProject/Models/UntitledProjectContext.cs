@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using UntitledProject.Models;
 
 namespace UntitledProject.Models
 {
-    public partial class UntitledProjectContext : DbContext
+    public partial class UntitledProjectContext : IdentityDbContext<AppUser>
     {
 
         public UntitledProjectContext(DbContextOptions<UntitledProjectContext> options)
@@ -74,6 +75,8 @@ namespace UntitledProject.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
             });
+
+            base.OnModelCreating(modelBuilder);
 
             OnModelCreatingPartial(modelBuilder);
         }

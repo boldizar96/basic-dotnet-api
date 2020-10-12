@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace UntitledProject.Models
 {
-    public partial class AppUser
+    public partial class AppUser : IdentityUser
     {
         public int UserId { get; set; }
         public string FirstName { get; set; }
