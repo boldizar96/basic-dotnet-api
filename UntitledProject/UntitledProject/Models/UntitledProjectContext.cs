@@ -20,8 +20,8 @@ namespace UntitledProject.Models
         {
             modelBuilder.Entity<AppUser>(entity =>
             {
-                entity.HasKey(e => e.UserId)
-                    .HasName("PK__AppUser__1788CC4CA13EBEE7");
+                //entity.HasKey(e => e.UserId)
+                //    .HasName("PK__AppUser__1788CC4CA13EBEE7");
 
                 entity.Property(e => e.CreatedDate)
                     .HasColumnType("datetime")
@@ -42,10 +42,10 @@ namespace UntitledProject.Models
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                ////entity.Property(e => e.Password)
+                //    .IsRequired()
+                //    .HasMaxLength(20)
+                //    .IsUnicode(false);
 
                 entity.Property(e => e.UserName)
                     .IsRequired()

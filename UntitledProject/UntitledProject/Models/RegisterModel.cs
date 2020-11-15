@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace UntitledProject.Models
 {
+    [NotMapped]
     public class RegisterModel
     {
         [Required(ErrorMessage = "User Name is required")]
@@ -17,5 +19,11 @@ namespace UntitledProject.Models
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "FirstName is required")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "LastName is required")]
+        public string LastName { get; set; }
     }
 }
