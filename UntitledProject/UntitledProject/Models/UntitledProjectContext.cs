@@ -47,18 +47,23 @@ namespace UntitledProject.Models
                 //    .HasMaxLength(20)
                 //    .IsUnicode(false);
 
+
                 entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
+
+                entity.HasMany<Product>();
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.Property(e => e.Category)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                // entity.Property(e => e.Category)
+                //   .IsRequired()
+                //  .HasMaxLength(100)
+                //.IsUnicode(false);
+                entity.HasMany<Category>(e => e.Categories);
+                
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(1000)
@@ -76,11 +81,18 @@ namespace UntitledProject.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.HasMany<Product>(c => c.Products);
+            });
+
             base.OnModelCreating(modelBuilder);
 
             OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<UntitledProject.Models.Category> Category { get; set; }
     }
 }

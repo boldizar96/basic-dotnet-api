@@ -17,8 +17,14 @@ namespace UntitledProject.Models
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
 
+        [DataType(DataType.Password)]
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm new password")]
+        [Compare("Password", ErrorMessage = "The new password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "FirstName is required")]
         public string FirstName { get; set; }
