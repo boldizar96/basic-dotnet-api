@@ -10,5 +10,6 @@ namespace UntitledProject.Models
         public string LastName { get; set; }
 
         public DateTime CreatedDate { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

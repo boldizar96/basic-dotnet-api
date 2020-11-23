@@ -53,6 +53,8 @@ namespace UntitledProject.Models
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
+                entity.HasMany<Product>(e => e.Products);
+
                 entity.HasMany<Product>();
             });
 
@@ -69,9 +71,7 @@ namespace UntitledProject.Models
                     .HasMaxLength(1000)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Offerer)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.HasOne<AppUser>(e => e.Offerer);
 
                 entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
 
