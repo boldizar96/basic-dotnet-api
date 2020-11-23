@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UntitledProject.Models;
 
 namespace UntitledProject.Migrations
 {
     [DbContext(typeof(UntitledProjectContext))]
-    partial class UntitledProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20201115125920_Refact")]
+    partial class Refact
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,25 +238,6 @@ namespace UntitledProject.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("UntitledProject.Models.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Category");
-                });
-
             modelBuilder.Entity("UntitledProject.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -262,22 +245,21 @@ namespace UntitledProject.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Coordinates")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<string>("Description")
                         .HasColumnType("varchar(1000)")
                         .HasMaxLength(1000)
                         .IsUnicode(false);
 
-                    b.Property<string>("OffererId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Offerer")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 0)");
@@ -289,12 +271,6 @@ namespace UntitledProject.Migrations
                         .IsUnicode(false);
 
                     b.HasKey("ProductId");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("OffererId");
 
                     b.ToTable("Product");
                 });
@@ -348,28 +324,6 @@ namespace UntitledProject.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("UntitledProject.Models.Category", b =>
-                {
-                    b.HasOne("UntitledProject.Models.Product", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ProductId");
-                });
-
-            modelBuilder.Entity("UntitledProject.Models.Product", b =>
-                {
-                    b.HasOne("UntitledProject.Models.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("AppUserId");
-
-                    b.HasOne("UntitledProject.Models.Category", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("UntitledProject.Models.AppUser", "Offerer")
-                        .WithMany("Products")
-                        .HasForeignKey("OffererId");
                 });
 #pragma warning restore 612, 618
         }

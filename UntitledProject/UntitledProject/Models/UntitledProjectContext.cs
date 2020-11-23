@@ -20,8 +20,8 @@ namespace UntitledProject.Models
         {
             modelBuilder.Entity<AppUser>(entity =>
             {
-                entity.HasKey(e => e.UserId)
-                    .HasName("PK__AppUser__1788CC4CA13EBEE7");
+                //entity.HasKey(e => e.UserId)
+                //    .HasName("PK__AppUser__1788CC4CA13EBEE7");
 
                 entity.Property(e => e.CreatedDate)
                     .HasColumnType("datetime")
@@ -42,31 +42,36 @@ namespace UntitledProject.Models
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                ////entity.Property(e => e.Password)
+                //    .IsRequired()
+                //    .HasMaxLength(20)
+                //    .IsUnicode(false);
+
 
                 entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
+
+                entity.HasMany<Product>(e => e.Products);
+
+                entity.HasMany<Product>();
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.Property(e => e.Category)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                // entity.Property(e => e.Category)
+                //   .IsRequired()
+                //  .HasMaxLength(100)
+                //.IsUnicode(false);
+                entity.HasMany<Category>(e => e.Categories);
+                
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(1000)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Offerer)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.HasOne<AppUser>(e => e.Offerer);
 
                 entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
 
@@ -76,11 +81,18 @@ namespace UntitledProject.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.HasMany<Product>(c => c.Products);
+            });
+
             base.OnModelCreating(modelBuilder);
 
             OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<UntitledProject.Models.Category> Category { get; set; }
     }
 }

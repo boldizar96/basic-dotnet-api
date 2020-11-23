@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UntitledProject.Models;
 
 namespace UntitledProject.Migrations
 {
     [DbContext(typeof(UntitledProjectContext))]
-    partial class UntitledProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20201121115603_Category")]
+    partial class Category
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,16 +270,15 @@ namespace UntitledProject.Migrations
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Coordinates")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .HasColumnType("varchar(1000)")
                         .HasMaxLength(1000)
                         .IsUnicode(false);
 
-                    b.Property<string>("OffererId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Offerer")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 0)");
@@ -293,8 +294,6 @@ namespace UntitledProject.Migrations
                     b.HasIndex("AppUserId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("OffererId");
 
                     b.ToTable("Product");
                 });
@@ -366,10 +365,6 @@ namespace UntitledProject.Migrations
                     b.HasOne("UntitledProject.Models.Category", null)
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
-
-                    b.HasOne("UntitledProject.Models.AppUser", "Offerer")
-                        .WithMany("Products")
-                        .HasForeignKey("OffererId");
                 });
 #pragma warning restore 612, 618
         }
