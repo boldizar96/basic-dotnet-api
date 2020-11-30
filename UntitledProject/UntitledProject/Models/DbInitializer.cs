@@ -68,7 +68,19 @@ namespace UntitledProject.Models
                 }
             }
 
-            
+            if (!context.Category.Any())
+            {
+                string[] categories = { "PC", "Apple", "IoT", "Gaming", "Notebook", "Android", "Industry", "Accessories", "Others" };
+
+                foreach (var item in categories)
+                {
+                    Category temp = new Category { Name = item };
+
+                    context.Category.Add(temp);
+                }
+
+                context.SaveChangesAsync();
+            }
 
 
         }

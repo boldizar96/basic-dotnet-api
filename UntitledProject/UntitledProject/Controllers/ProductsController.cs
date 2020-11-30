@@ -1,25 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UntitledProject.Models;
 
 namespace UntitledProject.Controllers
 {
-    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
         private readonly UntitledProjectContext _context;
+        private UserManager<AppUser> userMgr;
+        private IWebHostEnvironment Environment;
 
-        public ProductsController(UntitledProjectContext context)
+        public ProductsController(UntitledProjectContext context, UserManager<AppUser> userManager, IWebHostEnvironment _environment)
         {
             _context = context;
+            userMgr = userManager;
+            Environment = _environment;
         }
 
         // GET: api/Products
@@ -81,10 +87,47 @@ namespace UntitledProject.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            _context.Product.Add(product);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
+            if (ModelState.IsValid)
+            {
+                var files = HttpContext.Request.Form.Files;
+                foreach (var Image in files)
+                {
+                    if (Image != null && Image.Length > 0)
+                    {
+
+                        var file = Image;
+                        string wwwPath = this.Environment.WebRootPath;
+                        var uploads = Path.Combine(wwwPath, "img\\products");
+
+                        if (file.Length > 0)
+                        {
+                            var fileName = ContentDispositionHeaderValue.Parse
+                                (file.ContentDisposition).FileName.Trim('"');
+
+                            System.Console.WriteLine(fileName);
+                            using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                            {
+                                await file.CopyToAsync(fileStream);
+                                product.ImageName = file.FileName;
+                            }
+
+
+                        }
+                    }
+                }
+                AppUser usr = _context.AppUser.FirstOrDefault(a => a.Id == userMgr.GetUserId(User));
+                product.Offerer = usr;
+                _context.Product.Add(product);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         // DELETE: api/Products/5

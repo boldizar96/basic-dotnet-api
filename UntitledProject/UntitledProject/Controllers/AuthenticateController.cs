@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +24,14 @@ namespace UntitledProject.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration _configuration;
+        private IWebHostEnvironment Environment;
 
-        public AuthenticateController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthenticateController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IWebHostEnvironment _environment)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             _configuration = configuration;
+            Environment = _environment;
         }
 
         [HttpPost]
@@ -75,8 +80,34 @@ namespace UntitledProject.Controllers
             var userExists = await userManager.FindByNameAsync(model.Username);
             if (userExists != null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+            var files = HttpContext.Request.Form.Files;
+            foreach (var Image in files)
+            {
+                if (Image != null && Image.Length > 0)
+                {
 
-            AppUser user = new AppUser()
+                    var file = Image;
+                    string wwwPath = this.Environment.WebRootPath;
+                    var uploads = Path.Combine(wwwPath, "img\\users");
+
+                    if (file.Length > 0)
+                    {
+                        var fileName = ContentDispositionHeaderValue.Parse
+                            (file.ContentDisposition).FileName.Trim('"');
+
+                        System.Console.WriteLine(fileName);
+                        using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                            model.ProfilePic = file.FileName;
+                        }
+
+                        return null;
+                    }
+                }
+                    return null;
+                }
+                AppUser user = new AppUser()
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
