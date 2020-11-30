@@ -14,6 +14,7 @@ namespace UntitledProject.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public Condition Condition { get; set; }
+        public string ImageName { get; set; }
 
     }
 }

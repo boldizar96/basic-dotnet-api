@@ -31,5 +31,7 @@ namespace UntitledProject.Models
 
         [Required(ErrorMessage = "LastName is required")]
         public string LastName { get; set; }
+        public string ProfilePic { get; set; }
+
     }
 }

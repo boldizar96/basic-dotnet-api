@@ -8,6 +8,7 @@ namespace UntitledProject.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string ProfilePic { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public ICollection<Product> Products { get; set; }
