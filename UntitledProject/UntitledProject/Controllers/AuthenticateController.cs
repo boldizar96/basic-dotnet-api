@@ -152,5 +152,22 @@ namespace UntitledProject.Controllers
 
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
+
+        [HttpGet]
+        public async Task<ActionResult<AppUser>> GetUser(string userId)
+        {
+            return await userManager.FindByIdAsync(userId);
+
+        }
+
+        [HttpGet]
+        public IActionResult GetProfilePic(AppUser user)
+        {
+            string wwwPath = this.Environment.WebRootPath;
+            var uploads = Path.Combine(wwwPath, "img\\users");
+            var file = Path.Combine(uploads, user.ProfilePic);
+            Byte[] b = System.IO.File.ReadAllBytes(file);
+            return File(b, "image/jpeg");
+        }
     }
 }

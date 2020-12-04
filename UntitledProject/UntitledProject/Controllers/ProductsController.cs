@@ -35,6 +35,24 @@ namespace UntitledProject.Controllers
             return await _context.Product.ToListAsync();
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetOwnersProduct(string userId)
+        {
+            AppUser user = await userMgr.FindByIdAsync(userId);
+
+            return await _context.Product.Where(p => p.Offerer == user).ToListAsync();
+        }
+
+        [HttpGet]
+        public IActionResult GetProductPic(Product product)
+        {
+            string wwwPath = this.Environment.WebRootPath;
+            var uploads = Path.Combine(wwwPath, "img\\products");
+            var file = Path.Combine(uploads, product.ImageName);
+            Byte[] b = System.IO.File.ReadAllBytes(file);
+            return File(b, "image/jpeg");
+        }
+
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
