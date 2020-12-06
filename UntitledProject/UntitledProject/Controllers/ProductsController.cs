@@ -30,20 +30,21 @@ namespace UntitledProject.Controllers
 
         // GET: api/Products
         [HttpGet]
+
         public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
             return await _context.Product.ToListAsync();
         }
 
-        [HttpGet]
+        [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<Product>>> GetOwnersProduct(string userId)
         {
-            AppUser user = await userMgr.FindByIdAsync(userId);
+                AppUser user = await userMgr.FindByIdAsync(userId);
 
             return await _context.Product.Where(p => p.Offerer == user).ToListAsync();
         }
 
-        [HttpGet]
+        [HttpGet("{productId}")]
         public IActionResult GetProductPic(Product product)
         {
             string wwwPath = this.Environment.WebRootPath;
