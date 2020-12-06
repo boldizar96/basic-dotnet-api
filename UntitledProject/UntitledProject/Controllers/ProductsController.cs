@@ -44,7 +44,7 @@ namespace UntitledProject.Controllers
             return await _context.Product.Where(p => p.Offerer == user).ToListAsync();
         }
 
-        [HttpGet("{productId}")]
+        [HttpGet("{product}")]
         public IActionResult GetProductPic(Product product)
         {
             string wwwPath = this.Environment.WebRootPath;

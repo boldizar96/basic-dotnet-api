@@ -35,15 +35,14 @@ namespace UntitledProject.Models
                 }
             }
 
-            if (context.AppUser.Any())
+            if (!context.AppUser.Any())
             {
-                return;   // DB már fel van töltve
-            }
-            else
-            {
+                  // DB már fel van töltv
 
                 var poweruser = new AppUser
                 {
+                    FirstName = "Admin",
+                    LastName = "Admin",
                     UserName = "admin@admin.hu",
                     Email = "admin@admin.hu",
                     EmailConfirmed = true,
@@ -79,7 +78,25 @@ namespace UntitledProject.Models
                     context.Category.Add(temp);
                 }
 
-                context.SaveChangesAsync();
+                context.SaveChanges();
+            }
+
+            if(!context.Product.Any())
+            {
+
+                ICollection<Category> cats = context.Category.Where(c => c.Name == "Pc").ToList();
+                Product temp1 = new Product { Categories = cats, Condition = Condition.New, Description = "asd", ProductName = "FirstTest" };
+                Product temp2 = new Product { Categories = cats, Condition = Condition.New, Description = "asd", ProductName = "SecondTest" };
+                Product temp3 = new Product { Categories = cats, Condition = Condition.New, Description = "asd", ProductName = "ThirdTest"};
+                Product temp4 = new Product { Categories = cats, Condition = Condition.New, Description = "asd", ProductName = "FourthTest" };
+                Product temp5 = new Product { Categories = cats, Condition = Condition.New, Description = "asd", ProductName = "FifthTest" };
+
+                context.Add(temp1);
+                context.Add(temp2);
+                context.Add(temp3);
+                context.Add(temp4);
+                context.Add(temp5);
+                context.SaveChanges();
             }
 
 
