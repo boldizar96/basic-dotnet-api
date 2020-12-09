@@ -18,6 +18,7 @@ namespace UntitledProject.Models
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
             context.Database.EnsureCreated();
+            context.Database.Migrate();
             if (!context.UserRoles.Any())
             {
                 string[] roleNames = { "Admin", "User" };
